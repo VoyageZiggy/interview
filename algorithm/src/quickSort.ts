@@ -4,20 +4,20 @@ export default function quickSort(arr: number[], low: number, high: number) {
     quickSort(arr, low, pivot - 1)
     quickSort(arr, pivot + 1, high)
   }
-  return arr
 }
 
 function partition(arr: number[], low: number, high: number) {
   let pivot = arr[low]
-  while (low < high && pivot <= arr[high]) {
-    --high
+  while (low < high) {
+    while (low < high && pivot <= arr[high]) {
+      --high
+    }
+    arr[low] = arr[high]
+    while (low < high && arr[low] <= pivot) {
+      ++low
+    }
+    arr[high] = arr[low]
+    arr[low] = pivot
   }
-  arr[low] = arr[high]
-  while (low < high && arr[low] <= pivot) {
-    ++low
-  }
-  arr[high] = arr[low]
-
-  arr[low] = pivot
   return low
 }
