@@ -1,10 +1,11 @@
+import { swap } from '@/utils'
+
+
 export default function bubbleSort(arr: number[], n: number) {
   for (let i = 1; i < n; i++) {
     for (let j = 0; j < n - i; j++) {
       if (arr[j] > arr[j + 1]) {
-        let temp = arr[j]
-        arr[j] = arr[j + 1]
-        arr[j + 1] = temp
+        swap(arr, j, j + 1)
       }
     }
   }

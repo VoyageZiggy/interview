@@ -10,6 +10,5 @@ describe("reverse 字符串“abcdef逆序fedcba", () => {
   it("reverse2", () => {
     expect(reverse2('abc')).toEqual('cba')
     expect(reverse2('abcd')).toEqual('dcba')
-
   })
 })

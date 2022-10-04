@@ -23,7 +23,6 @@ export function removeDuplicates3(arr: any[]) {
         if ((typeof list[i] === 'number' && list[i] !== list[i]) && (typeof list[j] === 'number' && list[j] !== list[j])) {
           list.splice(j, 1)
           j--
-
         }
       }
     }
