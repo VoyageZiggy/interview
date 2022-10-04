@@ -13,13 +13,17 @@ export function removeDuplicates2(arr: any[]) {
 
 export function removeDuplicates3(arr: any[]) {
   let list = arr.slice()
-  for (let i = 0; i <= list.length; i++) {
-    for (let j = i + 1; j <= list.length; j++) {
+  for (let i = 0; i < list.length; i++) {
+
+    for (let j = i + 1; j < list.length; j++) {
       if (list[j] === list[i]) {
         list.splice(j, 1)
+        j--
       } else {
         if ((typeof list[i] === 'number' && list[i] !== list[i]) && (typeof list[j] === 'number' && list[j] !== list[j])) {
           list.splice(j, 1)
+          j--
+
         }
       }
     }

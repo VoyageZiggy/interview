@@ -4,10 +4,10 @@ import removeDuplicates, { removeDuplicates2, removeDuplicates3 } from './remove
 
 describe('数组去重', () => {
   const arr = [
-    1, 1, "1", "1",
+    1, 1, 1, "1", "1", "1", 1,
     {}, {}, { c: 1 }, { c: 1 },
     'a', 'a', 'b', 'b',
-    [], [], [1], [1],
+    [], [], [1], [1], 'a',
     undefined, undefined,
     null, null,
     NaN, NaN,
