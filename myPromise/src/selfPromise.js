@@ -7,7 +7,7 @@ class MyPromise {
     try {
       executor(this.resolve, this.reject);
     } catch (error) {
-      this.rejected(error);
+      this.reject(error);
     }
   }
 
@@ -39,7 +39,7 @@ class MyPromise {
 
   then(onFulfilled, onRejected) {
     const realOnFulfilled =
-      typeof onFulfilled === "function" ? onFulfilled : (val) => val;
+      typeof onFulfilled === "function" ? onFulfilled : (value) => value;
     const realOnRejected =
       typeof onRejected === "function"
         ? onRejected
@@ -85,12 +85,14 @@ class MyPromise {
 }
 
 function resolvePromise(promise, x, resolve, reject) {
-  if (promise === x) {
-    return reject(new TypeError("promise and the value are the same"));
+  if (x === promise) {
+    return reject(new TypeError("promise and the value are same"));
   }
 
-  if ((typeof x === "function") | (typeof x === "object")) {
-    if (x === null) return resolve(x);
+  if (typeof x === "function" || typeof x === "object") {
+    if (x === null) {
+      return resolve(x);
+    }
 
     let then;
     try {
@@ -98,7 +100,6 @@ function resolvePromise(promise, x, resolve, reject) {
     } catch (error) {
       return reject(error);
     }
-
     if (typeof then === "function") {
       let called = false;
       try {
