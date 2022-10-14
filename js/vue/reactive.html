@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      class Dep {
+        constructor() {
+          this.subscribers = new Set();
+        }
+
+        depend() {
+          if (activeUpdate) {
+            this.subscribers.add(activeUpdate);
+          }
+        }
+        notify() {
+          this.subscribers.forEach((sub) => sub());
+        }
+      }
+
+      let activeUpdate = null;
+
+      function observe(obj) {
+        Object.keys(obj).forEach((key) => {
+          let interval = obj[key];
+          if (typeof obj === "object") {
+            observe(obj[key]);
+          }
+          const dep = new Dep();
+          Object.defineProperty(obj, key, {
+            get() {
+              dep.depend();
+              return interval;
+            },
+            set(newVal) {
+              const changed = newVal !== interval;
+              interval = newVal;
+              if (changed) {
+                dep.notify();
+              }
+            },
+          });
+        });
+        return obj;
+      }
+
+      function autorun(update) {
+        let wrapper = () => {
+          activeUpdate = wrapper;
+          update();
+          activeUpdate = null;
+        };
+        wrapper();
+      }
+
+      const state = {
+        count: 1,
+        person: {
+          age: 18,
+        },
+      };
+
+      observe(state);
+
+      autorun(() => {
+        console.log("state.count: ", state.person.age);
+        document.getElementById("app").innerHTML = state.person.age;
+      });
+      setTimeout(() => {
+        state.person.age++;
+      }, 2000);
+    </script>
+  </body>
+</html>
