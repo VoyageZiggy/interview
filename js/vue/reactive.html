@@ -29,7 +29,7 @@
       function observe(obj) {
         Object.keys(obj).forEach((key) => {
           let interval = obj[key];
-          if (typeof obj === "object") {
+          if (typeof interval === "object") {
             observe(obj[key]);
           }
           const dep = new Dep();
