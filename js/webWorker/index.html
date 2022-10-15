@@ -8,7 +8,9 @@
     <script id="worker" type="app/worker">
       addEventListener('message', function (e) {
         console.log('you said:  '+e.data)
-        postMessage('some worker message');
+        setTimeout(function () {
+          postMessage('some worker message');
+        },1000)
       }, false);
     </script>
   </head>
