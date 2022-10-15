@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <iframe src="./iframe.html" width="480" height="320"></iframe>
+    <script>
+      const { port1, port2 } = new MessageChannel();
+      var ifr = document.querySelector("iframe");
+      var otherWindow = ifr.contentWindow;
+      ifr.addEventListener("load", iframeLoaded, false);
+
+      function iframeLoaded() {
+        otherWindow.postMessage("<br> index post message to iframe", "*", [
+          port2,
+        ]);
+      }
+      port1.onmessage = (e) => {
+        document.getElementById("app").innerHTML += e.data;
+      };
+    </script>
+  </body>
+</html>
