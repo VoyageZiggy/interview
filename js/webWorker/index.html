@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script id="worker" type="app/worker">
+      addEventListener('message', function (e) {
+        console.log('you said:  '+e.data)
+        postMessage('some worker message');
+      }, false);
+    </script>
+  </head>
+  <body>
+    <script>
+      var blob = new Blob([document.querySelector("#worker").textContent]);
+      var url = window.URL.createObjectURL(blob);
+      var worker = new Worker(url);
+
+      worker.postMessage("hello world");
+      worker.onmessage = function (event) {
+        console.log("main received: ", event.data);
+      };
+    </script>
+  </body>
+</html>
