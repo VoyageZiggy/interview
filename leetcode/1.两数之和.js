@@ -11,13 +11,15 @@
  * @return {number[]}
  */
 var twoSum = function (nums, target) {
-  const obj = {};
-  const len = nums.length;
-  for (let i = 0; i < len; i++) {
-    if (obj[target - nums[i]] !== undefined) {
-      return [obj[target - nums[i]], i];
+  const map = new Map();
+  for (var i = 0; i < nums.length; i++) {
+    const n = nums[i];
+    if (map.has(target - n)) {
+      return [map.get(target - n), i];
+    } else {
+      map.set(target - n, i);
     }
-    obj[nums[i]] = i;
   }
+  return [];
 };
 // @lc code=end
