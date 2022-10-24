@@ -29,11 +29,9 @@
       let handler = {
         dep: new Dep(),
         get(target, key) {
-          if (typeof target[key] === "object" && target[key] !== null) {
-            return reactive(target[key]);
-          }
           this.dep.depend();
-          return Reflect.get(target, key);
+          const ret = Reflect.get(target, key);
+          return typeof ret === "object" ? reactive(ret) : ret;
         },
         set(target, key, newVal) {
           if (key == "length") return true;
