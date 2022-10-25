@@ -26,23 +26,36 @@
 
       let activeUpdate = null;
 
-      let handler = {
-        dep: new Dep(),
-        get(target, key) {
-          this.dep.depend();
-          const ret = Reflect.get(target, key);
-          return typeof ret === "object" ? reactive(ret) : ret;
-        },
-        set(target, key, newVal) {
-          if (key == "length") return true;
-          const ret = Reflect.set(target, key, newVal);
-          this.dep.notify();
-          return ret;
-        },
-      };
+      // let handler = {
+      //   dep: new Dep(),
+      //   get(target, key) {
+      //     this.dep.depend();
+      //     const ret = Reflect.get(target, key);
+      //     return typeof ret === "object" ? reactive(ret) : ret;
+      //   },
+      //   set(target, key, newVal) {
+      //     if (key == "length") return true;
+      //     const ret = Reflect.set(target, key, newVal);
+      //     this.dep.notify();
+      //     return ret;
+      //   },
+      // };
+
+      const dep = new Dep();
 
       function reactive(obj) {
-        return new Proxy(obj, handler);
+        return new Proxy(obj, {
+          get(target, key) {
+            dep.depend();
+            const ret = Reflect.get(target, key);
+            return typeof ret === "object" ? reactive(ret) : ret;
+          },
+          set(target, key, newVal) {
+            const ret = Reflect.set(target, key, newVal);
+            dep.notify();
+            return ret;
+          },
+        });
       }
 
       function effect(update) {
