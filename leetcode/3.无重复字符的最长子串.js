@@ -19,4 +19,3 @@ var lengthOfLongestSubstring = function (s) {
   }, 0);
 };
 // @lc code=end
-lengthOfLongestSubstring("");
