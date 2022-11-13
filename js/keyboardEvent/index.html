@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>keyboard</title>
+  </head>
+  <body>
+    <div>
+      <span>keydown: </span>
+      <input id="input1" type="text" />
+    </div>
+    <div>
+      <span>keyup: </span>
+      <input id="input2" type="text" />
+    </div>
+    <script>
+      function keydownEvent(e) {
+        console.log(
+          "keydown: " +
+            "\n" +
+            "key: " +
+            e.key +
+            "\n" +
+            "code: " +
+            e.code +
+            "\n" +
+            "SHIFT key pressed: " +
+            e.shiftKey +
+            "\n" +
+            "ALT key pressed: " +
+            e.altKey +
+            "\n"
+        );
+      }
+      function keyupEvent(e) {
+        console.log(
+          "🚀 keyup: " +
+            "\n" +
+            "key: " +
+            e.key +
+            "\n" +
+            "code: " +
+            e.code +
+            "\n" +
+            "SHIFT key pressed: " +
+            e.shiftKey +
+            "\n" +
+            "ALT key pressed: " +
+            e.altKey +
+            "\n"
+        );
+      }
+
+      const input1 = document.querySelector("#input1");
+      input1.addEventListener("keydown", keydownEvent);
+      const input2 = document.querySelector("#input2");
+      input2.addEventListener("keyup", keyupEvent);
+    </script>
+  </body>
+</html>
