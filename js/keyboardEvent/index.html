@@ -19,6 +19,18 @@
         <input id="input2" type="text" />
       </label>
     </div>
+    <div>
+      <label
+        >keydown shift:
+        <input id="input3" type="text" />
+      </label>
+    </div>
+    <div>
+      <label
+        >keyup shift:
+        <input id="input4" type="text" />
+      </label>
+    </div>
     <script>
       function keydownEvent(e) {
         console.log(
@@ -57,10 +69,54 @@
         );
       }
 
+      function keydownShiftEvent(e) {
+        if (!e.shiftKey) return;
+        console.log(
+          "🚀 keydown shift: " +
+            "\n" +
+            "key: " +
+            e.key +
+            "\n" +
+            "code: " +
+            e.code +
+            "\n" +
+            "SHIFT key pressed: " +
+            e.shiftKey +
+            "\n" +
+            "ALT key pressed: " +
+            e.altKey +
+            "\n"
+        );
+      }
+
+      function keyupShiftEvent(e) {
+        if (!e.shiftKey) return;
+        console.log(
+          "🚀 keyup shift: " +
+            "\n" +
+            "key: " +
+            e.key +
+            "\n" +
+            "code: " +
+            e.code +
+            "\n" +
+            "SHIFT key pressed: " +
+            e.shiftKey +
+            "\n" +
+            "ALT key pressed: " +
+            e.altKey +
+            "\n"
+        );
+      }
+
       const input1 = document.querySelector("#input1");
       input1.addEventListener("keydown", keydownEvent);
       const input2 = document.querySelector("#input2");
       input2.addEventListener("keyup", keyupEvent);
+      const input3 = document.querySelector("#input3");
+      input3.addEventListener("keydown", keyupShiftEvent);
+      const input4 = document.querySelector("#input4");
+      input4.addEventListener("keyup", keyupShiftEvent);
     </script>
   </body>
 </html>
