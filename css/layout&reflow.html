@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>layout paint</title>
+    <style>
+      #id {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+      }
+
+      .visibility {
+        visibility: visible;
+      }
+      .visibility__active {
+        visibility: hidden;
+      }
+
+      .height {
+        transition: height;
+
+        height: 20px;
+        background: rgb(114, 114, 114);
+      }
+
+      .height__active {
+        height: 100px;
+      }
+
+      .color {
+        color: inherit;
+      }
+      .color__red {
+        color: rgb(255, 121, 121);
+      }
+      .opacity {
+        transform: translateZ(0);
+        /* position: absolute;
+        left: 250px;
+        margin-top: 40px; */
+        transition: opacity;
+        transition-duration: 1s;
+        opacity: .9;
+      }
+
+      .opacity__active {
+        opacity: 0.4;
+      }
+      .transform {
+        transition: 1s;
+        will-change: transform;
+        width: 50%;
+        /* position: absolute; */
+        /* transform: translateZ(0); */
+        /* transform: translateX(1px); */
+
+      }
+      .transform__active {
+        transform: translateX(20px);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div
+        :class="['visibility', visibility? 'visibility__active' : '']"
+        @click="() => {
+        visibility = !visibility
+      }"
+      >
+        visibility
+      </div>
+      <div
+        :class="['height', height ? 'height__active': '']"
+        @click="() => {
+        height = !height
+      }"
+      >
+        height
+      </div>
+
+      <div
+        :class="['color', color? 'color__red': '']"
+        @click="() => {
+        color = !color
+      }"
+      >
+        color
+      </div>
+      <div
+        :class="['opacity',  opacity? 'opacity__active': '']"
+        @click="() => {
+      opacity = !opacity
+    }"
+      >
+        opacity
+      </div>
+      <div
+        :class="['transform', transform? 'transform__active': '']"
+        @click="() => {
+        transform = !transform
+      }"
+      >
+        transform translateX
+      </div>
+      <div style="z-index: 100;position: absolute;">hahaah</div>
+    </div>
+
+    <script>
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            message: "Hello Vue!",
+            opacity: false,
+            visibility: false,
+            height: false,
+            color: false,
+            transform: false,
+          };
+        },
+
+        // mounted() {
+        //   setInterval(() => {
+        //   this.opacity = !this.opacity
+
+        //   },1000)
+        // }
+      }).mount("#app");
+    </script>
+  </body>
+</html>
