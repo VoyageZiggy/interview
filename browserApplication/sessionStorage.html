@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>SessionStorage</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <p>
+        <span>SessionStorage:</span>
+        <span>{{this.count}}</span>
+        <button @click="handleCreate">+</button>
+      </p>
+    </div>
+  </body>
+  <script>
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          count: 1,
+        };
+      },
+      methods: {
+        handleCreate() {
+          this.count += 1;
+          sessionStorage.setItem("count", this.count);
+        },
+      },
+    }).mount("#app");
+    new PerformanceObserver((entryList) => {
+      for (const entry of entryList.getEntriesByName(
+        "first-contentful-paint"
+      )) {
+        console.log("FCP candidate:", entry.startTime, entry);
+      }
+    }).observe({ type: "paint", buffered: true });
+  </script>
+</html>
+l
