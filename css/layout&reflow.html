@@ -40,26 +40,20 @@
         color: rgb(255, 121, 121);
       }
       .opacity {
-        transform: translateZ(0);
-        /* position: absolute;
-        left: 250px;
-        margin-top: 40px; */
+        /* transform: translateZ(0); */
         transition: opacity;
         transition-duration: 1s;
-        opacity: .9;
+        opacity: 0.2;
+        /* will-change: opacity; */
       }
 
       .opacity__active {
-        opacity: 0.4;
+        opacity: 1;
       }
       .transform {
         transition: 1s;
         will-change: transform;
         width: 50%;
-        /* position: absolute; */
-        /* transform: translateZ(0); */
-        /* transform: translateX(1px); */
-
       }
       .transform__active {
         transform: translateX(20px);
@@ -109,7 +103,7 @@
       >
         transform translateX
       </div>
-      <div style="z-index: 100;position: absolute;">hahaah</div>
+      <!-- <div style="z-index: 100; position: absolute">hahaah</div> -->
     </div>
 
     <script>
