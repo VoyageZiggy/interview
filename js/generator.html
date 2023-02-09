@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="app">next</button>
+    <script>
+      function* gen() {
+        console.log("state1");
+        let state1 = yield "state1";
+        console.log("🚀 ~ file: generator.html:14 ~ *gen ~ state1", state1);
+        console.log("state2");
+        let state2 = yield "state2";
+        console.log("🚀 ~ file: generator.html:18 ~ *gen ~ state2", state2);
+        console.log("end");
+      }
+
+      ge = gen();
+      let count = 0;
+      function handle() {
+        ge.next(count);
+        count++;
+      }
+
+      document.getElementById("app").addEventListener("click", handle);
+    </script>
+  </body>
+</html>
