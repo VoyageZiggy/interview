@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>flex</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      row {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: wrap;
+        height: 100px;
+        width: 100vw;
+      }
+
+      .flex {
+        display: flex;
+        width: 300px;
+        height: 50px;
+        background-color: #006266;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <row>
+      <div class="flex-1 flex">
+        <div class="flex-1__header">width:100px</div>
+        <div class="flex-1__ctx">width: 100%</div>
+      </div>
+
+      <style>
+        .flex-1__header {
+          width: 100px;
+          background: #ee5a24;
+        }
+
+        .flex-1__ctx {
+          width: 100%;
+          background: #009432;
+        }
+      </style>
+
+      <div class="flex-2 flex">
+        <div class="flex-2__header">
+          <div style="width: 100px">content width:100px</div>
+        </div>
+        <div class="flex-2__ctx">width: 100%
+          <div style="width: 100vw;height: 50px"></div>
+        </div>
+      </div>
+
+      <style>
+        .flex-2__header {
+          width: 100px;
+          background: #ea2027;
+        }
+
+        .flex-2__ctx {
+          /* width: 100%; */
+          background: #006266;
+        }
+      </style>
+
+      <div class="flex-3 flex">
+        <div class="flex-3__header">basis:100px</div>
+        <div class="flex-3__ctx">width: 100%</div>
+      </div>
+
+      <style>
+        .flex-3__header {
+          flex-basis: 100px;
+          background: #e67e22;
+        }
+
+        .flex-3__ctx {
+          width: 100%;
+          background: #27ae60;
+        }
+      </style>
+    </row>
+    <row>
+      <div class="flex-4 flex">
+        <div class="flex-4__header">
+          <div style="line-height: 25px">basis: 200px</div>
+          <div style="line-height: 25px">width: 150px</div>
+        </div>
+        <div class="flex-4__ctx">
+          <div>width: 100%</div>
+        </div>
+      </div>
+      <style>
+        .flex-4__header {
+          flex-basis: 200px;
+          width: 150px;
+          background: #8e44ad;
+        }
+
+        .flex-4__ctx {
+          width: 100%;
+          background: #2c3e50;
+        }
+      </style>
+      <div class="flex-5 flex">
+        <div class="flex-5__header">
+          <div style="line-height: 25px">basis: 150px</div>
+          <div style="line-height: 25px">width: 200px</div>
+        </div>
+        <div class="flex-5__ctx">
+          <div>width: 100%</div>
+        </div>
+      </div>
+      <style>
+        .flex-5__header {
+          flex-basis: 150px;
+          width: 200px;
+          background: #9b59b6;
+        }
+
+        .flex-5__ctx {
+          width: 100%;
+          background: #2980b9;
+        }
+      </style>
+    </row>
+  </body>
+</html>
