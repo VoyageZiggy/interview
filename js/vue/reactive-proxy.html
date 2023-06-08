@@ -8,80 +8,97 @@
   </head>
   <body>
     <div id="app"></div>
+    <div id="app1"></div>
     <script>
-      class Dep {
-        constructor() {
-          this.subscribers = new Set();
-        }
+let targetMap = new WeakMap()
+let activeEffect = null;
 
-        depend() {
-          if (activeUpdate) {
-            this.subscribers.add(activeUpdate);
-          }
-        }
-        notify() {
-          this.subscribers.forEach((sub) => sub());
-        }
-      }
+function track(target, key) {
+  if (activeEffect) {
+    let depsMap = targetMap.get(target)
+    if (!depsMap) {
+      targetMap.set(target, (depsMap = new Map()))
+    }
+    let deps = depsMap.get(key)
+    if (!deps) {
+      depsMap.set(key, (deps = new Set()))
+    }
+    deps.add(activeEffect)
+  }
+}
 
-      let activeUpdate = null;
+function trigger(target, key) {
+  const depsMap = targetMap.get(target)
+  if (!depsMap) {
+    return
+  }
+  const effects = depsMap.get(key)
+  const effectsToRun = new Set(effects)
+  effectsToRun.forEach(fn => fn())
+  // effects && effects.forEach((fn) => fn())
+}
 
-      // let handler = {
-      //   dep: new Dep(),
-      //   get(target, key) {
-      //     this.dep.depend();
-      //     const ret = Reflect.get(target, key);
-      //     return typeof ret === "object" ? reactive(ret) : ret;
-      //   },
-      //   set(target, key, newVal) {
-      //     if (key == "length") return true;
-      //     const ret = Reflect.set(target, key, newVal);
-      //     this.dep.notify();
-      //     return ret;
-      //   },
-      // };
 
-      const dep = new Dep();
+function reactive(obj) {
+  return new Proxy(obj, {
+    get(target, key) {
+      track(target, key);
+      const ret = Reflect.get(target, key);
+      return typeof ret === "object" ? reactive(ret) : ret;
+    },
+    set(target, key, newVal) {
+      const ret = Reflect.set(target, key, newVal);
+      trigger(target, key);
+      return ret;
+    },
+  });
+}
 
-      function reactive(obj) {
-        return new Proxy(obj, {
-          get(target, key) {
-            dep.depend();
-            const ret = Reflect.get(target, key);
-            return typeof ret === "object" ? reactive(ret) : ret;
-          },
-          set(target, key, newVal) {
-            const ret = Reflect.set(target, key, newVal);
-            dep.notify();
-            return ret;
-          },
-        });
-      }
+function effect(update) {
+  let effectFn = () => {
+    cleanup(effectFn)
+    activeEffect = effectFn;
+    update();
+    // activeEffect = null;
+  };
+  effectFn.deps = []
+  effectFn();
+}
 
-      function effect(update) {
-        let wrapper = () => {
-          activeUpdate = wrapper;
-          update();
-          activeUpdate = null;
-        };
-        wrapper();
-      }
+function cleanup (effectFn) {
+  for (let i = 0; i < effectFn.deps.length; i++) {
+    const deps = effectFn.deps[i]
+    deps.delete(effectFn)
+  }
+  effectFn.deps.length = 0
+}
 
-      const state = {
-        count: 1,
-        person: {
-          age: 18,
-        },
-      };
+const state = {
+  count: 1,
+  flag: true,
+  person: {
+    age: 18,
 
-      const proxy = reactive(state);
+  },
+};
 
-      effect(() => {
-        document.getElementById("app").innerHTML = proxy.person.age;
-      });
-      setInterval(() => {
-        proxy.person.age++;
-      }, 1000);
+const proxy = reactive(state)
+
+effect(() => {
+  console.log('渲染执行')
+  document.getElementById("app").innerHTML = proxy.flag ? proxy.person.age : 'not';
+});
+
+setTimeout(() => {
+  proxy.flag = false
+}, 3000)
+
+// effect(() => {
+//   document.getElementById("app1").innerHTML = proxy.person.age + 'app1';
+// })
+setInterval(() => {
+  proxy.person.age++;
+}, 1000);
     </script>
   </body>
 </html>
