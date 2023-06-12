@@ -29,3 +29,45 @@ function buildForest (list) {
 }
 
 console.log(JSON.stringify( buildForest(list)))
+
+// 递归生成树
+// function buildForest(data) {
+//   const nodeMap = new Map();
+
+//   // 构建节点映射
+//   for (const item of data) {
+//     nodeMap.set(item.id, { ...item, children: [] });
+//   }
+
+//   function buildTree(id) {
+//     const node = nodeMap.get(id)
+//     for (const item of data) {
+//       if (item.pid === id) {
+//         const child = buildTree(item.id)
+//         if (child) {
+//           node.children.push(child)
+//         }
+//       }
+//     }
+//     return node
+//   }
+
+//   let forest = []
+//   for( const item of data) {
+//     const parent = nodeMap.get(item.pid)
+//     if (!parent) {
+//       const tree = buildTree(item.id)
+//       if (tree) {
+//         forest.push(tree)
+//       }
+//     }
+//   }
+
+//   return forest;
+// }
+
+
+// // 生成森林
+// const forest = buildForest(arr);
+
+// console.log(JSON.stringify(forest));
