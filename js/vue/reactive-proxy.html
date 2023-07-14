@@ -10,7 +10,7 @@
     <div id="app"></div>
     <div id="app1"></div>
     <script>
-let targetMap = new WeakMap()
+const targetMap = new WeakMap()
 let activeEffect = null;
 
 function track(target, key) {
@@ -24,6 +24,7 @@ function track(target, key) {
       depsMap.set(key, (deps = new Set()))
     }
     deps.add(activeEffect)
+    activeEffect.deps.push(deps)
   }
 }
 
@@ -35,7 +36,6 @@ function trigger(target, key) {
   const effects = depsMap.get(key)
   const effectsToRun = new Set(effects)
   effectsToRun.forEach(fn => fn())
-  // effects && effects.forEach((fn) => fn())
 }
 
 
@@ -93,9 +93,9 @@ setTimeout(() => {
   proxy.flag = false
 }, 3000)
 
-// effect(() => {
-//   document.getElementById("app1").innerHTML = proxy.person.age + 'app1';
-// })
+effect(() => {
+  document.getElementById("app1").innerHTML = proxy.person.age + 'app1';
+})
 setInterval(() => {
   proxy.person.age++;
 }, 1000);
