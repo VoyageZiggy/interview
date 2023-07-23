@@ -10,18 +10,28 @@
  * @return {string}
  */
 var longestPalindrome = function (s) {
-  // 中心扩散法  考虑回文子串奇偶性
-
-  let ll = 0;
-  let rr = 0;
-
+  let max = 0;
+  let start = -1;
   for (let i = 0; i < s.length; i++) {
-    for (let j of [i, i + 1]) {
-      for (let l = i, r = j; s[l] && s[l] === s[r]; l--, r++) {
-        [ll, rr] = r - l + 1 > rr - ll + 1 ? [l, r] : [ll, rr];
-      }
+    let now = 1
+    let l = i - 1
+    while(s[i] === s[i+1] && s[i] !== undefined) {
+      now++
+      i++
+    }
+    let r = i+1
+    while(s[l] === s[r] && s[l] !== undefined) {
+      now+=2
+      l--
+      r++
+    }
+    if (now > max) {
+      max = now
+      start = l + 1
     }
   }
-  return s.substring(ll, rr + 1);
+  return s.substring(start, start+  max)
 };
+
 // @lc code=end
+
