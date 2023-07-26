@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="app1"></div>
+    <script>
+const targetMap = new WeakMap()
+let activeEffect = null;
+
+function track(target, key) {
+  if (activeEffect) {
+    let depsMap = targetMap.get(target)
+    if (!depsMap) {
+      targetMap.set(target, (depsMap = new Map()))
+    }
+    let deps = depsMap.get(key)
+    if (!deps) {
+      depsMap.set(key, (deps = new Set()))
+    }
+    deps.add(activeEffect)
+    activeEffect.deps.push(deps)
+  }
+}
+
+function trigger(target, key) {
+  const depsMap = targetMap.get(target)
+  if (!depsMap) {
+    return
+  }
+  const effects = depsMap.get(key)
+  const effectsToRun = new Set(effects)
+  effectsToRun.forEach(effectFn => {
+    if (effectFn.options.scheduler) {
+      effectFn.options.scheduler(effectFn)
+    } else {
+      effectFn()
+    }
+  })
+}
+
+
+function reactive(obj) {
+  return new Proxy(obj, {
+    get(target, key) {
+      track(target, key);
+      const ret = Reflect.get(target, key);
+      return typeof ret === "object" ? reactive(ret) : ret;
+    },
+    set(target, key, newVal) {
+      const ret = Reflect.set(target, key, newVal);
+      trigger(target, key);
+      return ret;
+    },
+  });
+}
+
+function effect(update, options = {}) {
+  let effectFn = () => {
+    cleanup(effectFn)
+    activeEffect = effectFn;
+    update();
+    // activeEffect = null;
+  };
+  effectFn.deps = []
+  effectFn.options = options
+  effectFn();
+}
+
+function cleanup (effectFn) {
+  for (let i = 0; i < effectFn.deps.length; i++) {
+    const deps = effectFn.deps[i]
+    deps.delete(effectFn)
+  }
+  effectFn.deps.length = 0
+}
+
+const state = {
+  count: 1,
+  flag: true,
+  person: {
+    age: 18,
+
+  },
+};
+
+const proxy = reactive(state)
+
+
+const jobQueue = new Set()
+const p = Promise.resolve()
+let isFlushing = false
+
+const flushJob = () => {
+  if (isFlushing) {
+    return
+  }
+
+  isFlushing = true
+  // 微任务
+  p.then(() => {
+    jobQueue.forEach((job) => job())
+  }).finally(() => {
+    // 结束后充值设置为false
+    isFlushing = false
+  })
+}
+
+effect(() => {
+  console.log(proxy.person.age)
+  document.getElementById("app").innerHTML = proxy.person.age
+}, {
+  scheduler (job) {
+    jobQueue.add(job)
+    flushJob()
+  }
+});
+
+let count = 100
+while(count--) {
+  proxy.person.age++
+}
+
+// setInterval(() => {
+//   proxy.person.age++;
+// }, 1000);
+    </script>
+  </body>
+</html>
