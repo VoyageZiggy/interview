@@ -18,3 +18,38 @@ console.log("🚀 ~ file: 两个数组对象的不相交.js ~ line 12 ~ arr4 ~ a
   ...arr4,
   ...arr5,
 ]);
+
+function jj(arr1, arr2) {
+  const hashMap = {};
+  arr1.reduce((hashMap, item) => {
+    if (hashMap[item.id]) {
+      hashMap[item.id].duplicate = true
+    } else {
+      hashMap[item.id] = {
+        value: item,
+        duplicate: false
+      }
+    }
+    return hashMap
+  }, hashMap)
+  arr2.reduce((hashMap, item) => {
+    if (hashMap[item.id]) {
+      hashMap[item.id].duplicate = true
+    } else {
+      hashMap[item.id] = {
+        value: item,
+        duplicate: false
+      }
+    }
+    return hashMap
+  }, hashMap)
+  const arr3 = [];
+  Object.keys(hashMap).forEach((key) => {
+    if (hashMap[key].duplicate === false) {
+      arr3.push(hashMap[key].value);
+    }
+  });
+  return arr3;
+}
+
+console.log(jj(arr1, arr2));
